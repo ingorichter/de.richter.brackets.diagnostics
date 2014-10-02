@@ -1,0 +1,25 @@
+{
+    "tags"      : {
+        "allowUnknownTags" : true
+    },
+    "plugins"   : ["plugins/markdown"],
+    "templates" : {
+        "cleverLinks"     : false,
+        "monospaceLinks"  : false,
+        "default"         : {
+            "outputSourceFiles" : true
+        },
+        "systemName"      : "de richter brackets diagnostics",
+        "footer"          : "",
+        "copyright"       : "Copyright ©  2014",
+        "navType"         : "vertical",
+        "theme"           : "readable",
+        "linenums"        : true,
+        "collapseSymbols" : false,
+        "inverseNav"      : true
+    },
+    "markdown"  : {
+        "parser"   : "gfm",
+        "hardwrap" : true
+    }
+}
