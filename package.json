@@ -1,40 +1,37 @@
 {
   "name": "de.richter.brackets.diagnostics",
+  "title": "Brackets Diagnostic Report",
   "version": "0.0.1",
   "main": "main.js",
   "description": "Collect diagnostic information about Brackets and installed Extensions",
   "homepage": "http://github.com/ingorichter/de.richter.brackets.diagnostics",
   "bugs": "https://github.com/ingorichter/de.richter.brackets.diagnostics/issues",
   "license": "MIT",
-  "author": {
-    "name": "Ingo Richter",
-    "email": "ingo.richter@gmail.com",
-    "url": "http://www.ingo-richter.name"
-  },
+  "author": "Ingo Richter <ingo.richter+github@gmail.com> (http://www.ingo-richter.name)",
   "scripts": {
     "test": "mocha unittests.js"
   },
   "i18n": [
-    "en", "de", "it" 
+    "en", "de", "it"
   ],
   "keywords": [
-    "brackets"
+    "brackets",
+    "diagnostic",
+    "systeminformation",
+    "debugging",
+    "configuration"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ingorichter/de.richter.brackets.diagnostics.git"
   },
-  "licenses": [
-    {
-      "type": "MIT"
-    }
-  ],
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-mocha": "~0.4.11",
     "load-grunt-tasks": "~0.6.0",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-requirejs": "^0.4.4",
     "grunt-contrib-compress": "~0.12.0",
     "grunt-jsdoc": "^0.5.7",
     "time-grunt": "~1.0.0",
@@ -45,7 +42,7 @@
     "sinon": "~1.10.3"
   },
   "engines": {
-    "brackets": ">=0.42.0"
+    "brackets": ">=0.40.0"
   },
   "dependencies": {
     "ua-parser-js": "^0.7.0"

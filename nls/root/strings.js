@@ -27,5 +27,5 @@
 /*global define */
 
 define({
-    "MENU_ITEM_LABEL"                   : "Generate Diagnostic Report\u2026"
+    'MENU_ITEM_LABEL'                   : 'Generate Diagnostic Report\u2026'
 });

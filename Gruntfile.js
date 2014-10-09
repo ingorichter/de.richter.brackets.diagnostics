@@ -7,10 +7,11 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
-    "use strict";
+    'use strict';
     // load all grunt tasks
     require('load-grunt-tasks')(grunt, {pattern: ['grunt-contrib-*']});
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-zip');
 
     // configurable paths
     var extensionConfig = {
@@ -19,7 +20,7 @@ module.exports = function (grunt) {
     };
 
     // Load optional requirejs config, see http://requirejs.org/docs/api.html#config
-    //var rjsconfig = grunt.file.readJSON("requirejs-config.json");
+    var rjsconfig = grunt.file.readJSON('requirejs-config.json');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -60,36 +61,41 @@ module.exports = function (grunt) {
                 'nls/**/*.js'
             ]
         },
-//        requirejs: {
-//            dist: {
-//                // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
-//                options: {
-//                    name: 'main',
-//                    paths: rjsconfig.paths,
-//                    shim: rjsconfig.shim,
-//                    optimize: 'uglify2',
-//                    out: 'min/main.js',
-//                    generateSourceMaps: true,
-//                    useSourceUrl: true,
-//                    preserveLicenseComments: false,
-//                    useStrict: true,
-//                    wrap: false,
-//                    uglify2: {}
-//                }
-//            }
-//        },
+        requirejs: {
+            dist: {
+                // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+                options: {
+                    name: 'main',
+                    paths: rjsconfig.paths,
+                    shim: rjsconfig.shim,
+                    optimize: 'uglify2',
+                    out: 'min/main.js',
+                    generateSourceMaps: true,
+                    useSourceUrl: true,
+                    preserveLicenseComments: false,
+                    useStrict: true,
+                    wrap: false,
+                    uglify2: {}
+                }
+            }
+        },
         compress: {
             dist: {
                 options: {
-                    archive: '<%= extensionConfig.dist %>/<%= pkg.name %>-<%= pkg.version %>.zip'
+                    archive: '<%= extensionConfig.dist %>/<%= pkg.name %>-<%= pkg.version %>.zip',
+                    mode: 'zip'
                 },
                 files: [{
                     expand: true,
-                    cwd: '',
-                    src: ['min/*.js', 'package.json', 'README.md', 'LICENSE', 'thirdparty/**'],
-                    dest: ''
+                    src: ['main.js', 'SystemInfo.js', 'strings.js', 'nls/**', 'package.json', 'README.md', 'LICENSE', 'thirdparty/**', 'node_modules/ua-parser-js/src/**']
                 }]
             }
+        },
+        zip: {
+            multi: {
+                src: ['main.js', 'SystemInfo.js', 'strings.js', 'nls/**', 'package.json', 'README.md', 'LICENSE', 'thirdparty/**', 'node_modules/ua-parser-js/src/**'],
+                dest: '<%= extensionConfig.dist %>/<%= pkg.name %>-<%= pkg.version %>.zip'
+            },
         }
     });
 
@@ -99,8 +105,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'requirejs',
-        'compress'
+        'zip'
+//        'requirejs',
+//        'compress'
     ]);
 
     grunt.registerTask('default', [
@@ -110,3 +117,5 @@ module.exports = function (grunt) {
         'build'
     ]);
 };
+
+

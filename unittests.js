@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Adobe Systems Incorporated. All rights reserved.
+ * Copyright (c) 2014 Ingo Richter.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -18,7 +18,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 /*jslint vars: true, plusplus: true, devel: true, browser: true, nomen: true, indent: 4, maxerr: 50 */
@@ -27,11 +26,11 @@
 define(function (require, exports, module) {
     'use strict';
 
-    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
-        FileUtils       = brackets.getModule("file/FileUtils");
+    var SpecRunnerUtils = brackets.getModule('spec/SpecRunnerUtils'),
+        FileUtils       = brackets.getModule('file/FileUtils');
 
-    describe("JSHint", function () {
-        var testFolder = FileUtils.getNativeModuleDirectoryPath(module) + "/unittest-files/",
+    describe('JSHint', function () {
+        var testFolder = FileUtils.getNativeModuleDirectoryPath(module) + '/unittest-files/',
             testWindow,
             $,
             brackets,
@@ -61,8 +60,8 @@ define(function (require, exports, module) {
             SpecRunnerUtils.closeTestWindow();
         });
 
-        it("should open a json file", function () {
-            waitsForDone(SpecRunnerUtils.openProjectFiles(["test.json"]), "open test file");
+        it('should open a json file', function () {
+            waitsForDone(SpecRunnerUtils.openProjectFiles(['test.json']), 'open test file');
 
             runs(function () {
                 var jsonFile = DocumentManager.getCurrentDocument();
@@ -73,3 +72,4 @@ define(function (require, exports, module) {
         });
     });
 });
+
