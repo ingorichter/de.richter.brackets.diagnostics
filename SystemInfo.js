@@ -52,12 +52,12 @@ define(function (require, exports, module) {
      * Initialize the UUID prefs with a unique value, when it doesn't exist.
      */
     function SystemInfo() {
-        if (! prefs.get(PREFS_KEY_UUID)) {
+        if (!prefs.get(PREFS_KEY_UUID)) {
             prefs.set(PREFS_KEY_UUID, _guid());
         }
     }
 
-    SystemInfo.prototype.generateReport = function () {
+    SystemInfo.prototype.generateReport = function (osInfo) {
         var info = {},
             uaresult = new UAParser().setUA(window.navigator.userAgent).getResult();
 
@@ -85,6 +85,7 @@ define(function (require, exports, module) {
         info.machineInfo.screensize.height = window.screen.height;
         info.machineInfo.screensize.width = window.screen.width;
         info.machineInfo.screensize.pixelDepth = window.screen.pixelDepth;
+        info.machineInfo.osInfo = osInfo;
 
         return info;
     };

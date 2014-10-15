@@ -32,13 +32,18 @@
 define(function (require, exports, module) {
     'use strict';
 
-    var CommandManager  = brackets.getModule('command/CommandManager'),
-        Menus           = brackets.getModule('command/Menus'),
-        Dialogs         = brackets.getModule('widgets/Dialogs'),
-//        MainViewManager = brackets.getModule('view/MainViewManager'),
-        _               = brackets.getModule('thirdparty/lodash'),
-        Strings         = require('strings'),
-        SystemInfo      = require('SystemInfo').SystemInfo;
+    var AppInit                   = brackets.getModule('utils/AppInit'),
+        ExtensionUtils            = brackets.getModule("utils/ExtensionUtils"),
+        CommandManager            = brackets.getModule('command/CommandManager'),
+        NodeConnection            = brackets.getModule('utils/NodeConnection'),
+        Menus                     = brackets.getModule('command/Menus'),
+        Dialogs                   = brackets.getModule('widgets/Dialogs'),
+//        MainViewManager         = brackets.getModule('view/MainViewManager'),
+        _                         = brackets.getModule('thirdparty/lodash'),
+        Strings                   = require('strings'),
+        SystemInfo                = require('SystemInfo').SystemInfo;
+
+    var nodeConnection;
 
     /** Shows a large message in a dialog with a scrolling panel. Based on SLOC extension by Peter Flynn. */
     function showResult(title, message) {
@@ -74,7 +79,19 @@ define(function (require, exports, module) {
         html += "</br>";
         html += "OS Version:" + data.machineInfo.osversion;
         html += "</br>";
-        html += "Screen heigth:" + data.machineInfo.screensize.height;
+        html += "OS Architecture:" + data.machineInfo.osInfo.os.arch;
+        html += "</br>";
+        html += "OS Type:" + data.machineInfo.osInfo.os.type;
+        html += "</br>";
+        html += "CPU Info:" + data.machineInfo.osInfo.os.cpus[0].model;
+        html += "</br>";
+        html += "CPU Cores:" + data.machineInfo.osInfo.os.cpus.length;
+        html += "</br>";
+        html += "Total Memory:" + (data.machineInfo.osInfo.os.totalmem / 1024 / 1024 / 1024) + ' GB';
+        html += "</br>";
+        html += "Free Memory:" + (data.machineInfo.osInfo.os.freemem / 1024 / 1024 / 1024) + ' GB';
+        html += "</br>";
+        html += "Screen height:" + data.machineInfo.screensize.height;
         html += "</br>";
         html += "Screen width:" + data.machineInfo.screensize.width;
         html += "</br>";
@@ -109,15 +126,34 @@ define(function (require, exports, module) {
 
     // Function to run when the menu item is clicked
     function generateReport() {
-        var systemInfo = new SystemInfo();
-        var htmlReport = formatReport(systemInfo.generateReport());
-        showResult("Brackets Diagnostic Report", htmlReport);
+        nodeConnection.domains.diagnostics.getOSInfo().done(function (osInfo) {
+            var systemInfo = new SystemInfo();
+            var htmlReport = formatReport(systemInfo.generateReport(osInfo));
+            showResult(Strings.REPORT_DIALOG_TITLE, htmlReport);
+        });
     }
 
-    // First, register a command - a UI-less object associating an id to a handler
-    var MY_COMMAND_ID = 'de.richter.brackets.diagnostics.generateDiagnosticReport';   // package-style naming to avoid collisions
-    CommandManager.register(Strings.MENU_ITEM_LABEL, MY_COMMAND_ID, generateReport);
+    function _setup() {
+        // First, register a command - a UI-less object associating an id to a handler
+        var MY_COMMAND_ID = 'de.richter.brackets.diagnostics.generateDiagnosticReport';   // package-style naming to avoid collisions
+        CommandManager.register(Strings.MENU_ITEM_LABEL, MY_COMMAND_ID, generateReport);
 
-    var menu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
-    menu.addMenuItem(MY_COMMAND_ID);
+        var menu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
+        menu.addMenuItem(MY_COMMAND_ID);
+
+        AppInit.appReady(function () {
+            nodeConnection = new NodeConnection();
+
+            nodeConnection.connect(true).then(function () {
+                nodeConnection.loadDomains(
+                    [ExtensionUtils.getModulePath(module, "node/DiagnosticsDomain")],
+                    true).then(function () {
+                        console.log("Started");
+                        //nodePromise.resolve();
+                    });
+            });
+        });
+    }
+
+    _setup();
 });

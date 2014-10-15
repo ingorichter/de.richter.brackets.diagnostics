@@ -28,6 +28,12 @@ Here is an overview of what is collected in each area.
 
 * OS Name
 * OS Version
+* OS Architecture
+* OS Type
+* CPU Info
+* CPU Cores available
+* Total Memory
+* Free Memory
 * Screen resolution (width & height)
 * Pixel depth
 
@@ -35,7 +41,7 @@ Here is an overview of what is collected in each area.
 MIT-licensed -- see `LICENSE` for details.
 
 ### Compatibility
-Brackets Sprint 44 or newer.
+Brackets Release 44 or newer.
 
 ### External Libraries
 [ua-parser-js](http://github.com/faisalman/ua-parser-js)

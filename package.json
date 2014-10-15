@@ -1,7 +1,7 @@
 {
   "name": "de.richter.brackets.diagnostics",
   "title": "Brackets Diagnostic Report",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "main.js",
   "description": "Collect diagnostic information about Brackets and installed Extensions",
   "homepage": "http://github.com/ingorichter/de.richter.brackets.diagnostics",
