@@ -8,7 +8,7 @@
  * the exports variable. See src\nls\strings.js for the master file of English strings.
  */
 define(function (require, exports, module) {
-    'use strict';
+    "use strict";
 
-    module.exports = require('i18n!nls/strings');
+    module.exports = require("i18n!nls/strings");
 });

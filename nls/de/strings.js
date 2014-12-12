@@ -27,6 +27,6 @@
 /*global define */
 
 define({
-    'MENU_ITEM_LABEL'     : 'Erstelle Diagnose Report\u2026',
-    'REPORT_DIALOG_TITLE' : 'Brackets Diagnose Report'
+    "MENU_ITEM_LABEL"     : "Erstelle Diagnose Report\u2026",
+    "REPORT_DIALOG_TITLE" : "Brackets Diagnose Report"
 });

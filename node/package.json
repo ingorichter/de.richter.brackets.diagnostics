@@ -1,0 +1,19 @@
+{
+  "name": "brackets-diagnostics-node",
+  "version": "0.0.1",
+  "description": "Node modules for Brackets Diagnostics Extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "node",
+    "brackets",
+    "diagnostics"
+  ],
+  "author": "Ingo Richter <ingo.richter+github@gmail.com> (http://www.ingo-richter.name)",
+  "license": "MIT",
+  "dependencies": {
+    "log4js": "~0.6.21"
+  }
+}

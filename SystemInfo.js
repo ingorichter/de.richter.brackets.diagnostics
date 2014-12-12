@@ -22,18 +22,18 @@
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, brackets, window */
-define(function (require, exports, module) {
-    'use strict';
+define(function (require, exports) {
+    "use strict";
 
-    var ExtensionManager    = brackets.getModule('extensibility/ExtensionManager'),
-        _                   = brackets.getModule('thirdparty/lodash'),
-        PreferencesManager  = brackets.getModule('preferences/PreferencesManager'),
-        prefs               = PreferencesManager.getExtensionPrefs('de.richter.brackets.diagnostics'),
-        UAParser            = require('node_modules/ua-parser-js/src/ua-parser');
+    var ExtensionManager    = brackets.getModule("extensibility/ExtensionManager"),
+        _                   = brackets.getModule("thirdparty/lodash"),
+        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
+        prefs               = PreferencesManager.getExtensionPrefs("de.richter.brackets.diagnostics"),
+        UAParser            = require("node_modules/ua-parser-js/src/ua-parser");
 
-    var PREFS_KEY_UUID = 'UUID';
+    var PREFS_KEY_UUID = "UUID";
 
-    prefs.definePreference(PREFS_KEY_UUID, 'string', '');
+    prefs.definePreference(PREFS_KEY_UUID, "string", "");
 
     // from http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
     // could be wrong, but probably random enough for me
@@ -44,8 +44,8 @@ define(function (require, exports, module) {
                        .substring(1);
         }
 
-        return r() + r() + '-' + r() + '-' + r() + '-' +
-               r() + '-' + r() + r() + r();
+        return r() + r() + "-" + r() + "-" + r() + "-" +
+               r() + "-" + r() + r() + r();
     }
 
     /**
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
         info.appInfo.appSupportDir = brackets.app.getApplicationSupportDirectory();
         info.appInfo.cefversion = uaresult.browser.version;
         info.appInfo.extensions = _.filter(ExtensionManager.extensions, function (extension) {
-            return extension.installInfo && extension.installInfo.locationType === 'user' && extension.installInfo.status === 'enabled';
+            return extension.installInfo && extension.installInfo.locationType === "user" && extension.installInfo.status === "enabled";
         });
 
         // machine info

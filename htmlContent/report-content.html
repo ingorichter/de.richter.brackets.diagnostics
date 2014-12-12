@@ -1,0 +1,67 @@
+<header id="report_header">
+    <p>Generated: {{dateGenerated}}</p>
+    <table border="1" cellpadding="5">
+        <caption align="left">Client Information</caption>
+        <tbody>
+            <tr><td width="20%">UUID:</td><td>{{clientUUID}}<td></tr>
+        </tbody>
+    </table>
+</header>
+
+</br>
+
+<section id="machine_information">
+    <table border="1" cellpadding="5">
+        <caption align="left">Machine Information</caption>
+        <tbody>
+            <tr><td width="20%">OS Name:</td><td>{{machineInfo.osname}}</td></tr>
+            <tr><td width="20%">OS Version:</td><td>{{machineInfo.osversion}}</td></tr>
+            <tr><td width="20%">OS Architecture:</td><td>{{machineInfo.osInfo.os.arch}}</td></tr>
+            <tr><td width="20%">OS Type:</td><td>{{machineInfo.osInfo.os.type}}</td></tr>
+            <tr><td width="20%">CPU Model:</td><td>{{cpuModel}}</td></tr>
+            <tr><td width="20%">CPU Cores:</td><td>{{machineInfo.osInfo.os.cpus.length}}</td></tr>
+            <tr><td width="20%">Total Memory:</td><td>{{formatTotalMemory}}</td></tr>
+            <tr><td width="20%">Free Memory:</td><td>{{formatFreeMemory}}</td></tr>
+            <tr><td width="20%">Screen height:</td><td>{{machineInfo.screensize.height}}</td></tr>
+            <tr><td width="20%">Screen width:</td><td>{{machineInfo.screensize.width}}</td></tr>
+            <tr><td width="20%">Pixel Depth:</td><td>{{machineInfo.screensize.pixelDepth}}</td></tr>
+        </tbody>
+    </table>
+</section>
+
+</br>
+
+<section id="brackets_information">
+    <table border="1" cellpadding="5">
+        <caption align="left">Brackets Information</caption>
+        <tbody>
+            <tr><td width="20%">Version:</td><td>{{appInfo.version}}</td></tr>
+            <tr><td width="20%">Language:</td><td>{{appInfo.language}}</td></tr>
+            <tr><td width="20%">InBrowser:</td><td>{{appInfo.inBrowser}}</td></tr>
+            <tr><td width="20%">App Support Dir:</td><td>{{appInfo.appSupportDir}}</td></tr>
+            <tr><td width="20%">CEF Version:</td><td>{{appInfo.cefversion}}</td></tr>
+        </tbody>
+    </table>
+</section>
+
+</br>
+
+<section id="extensions">
+    <table border="1" cellpadding="5">
+        <caption align="left">Extensions</caption>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#appInfo.extensions}}
+            <tr>
+                <td>{{appInfo.extensionName}}</td>
+                <td align="center">{{installInfo.metadata.version}}</td>
+            </tr>
+            {{/appInfo.extensions}}
+        </tbody>
+    </table>
+</section>

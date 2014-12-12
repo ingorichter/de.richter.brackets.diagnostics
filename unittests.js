@@ -24,16 +24,16 @@
 /*global define, describe, it, expect, beforeEach, afterEach, runs, brackets, waitsForDone */
 
 define(function (require, exports, module) {
-    'use strict';
+    "use strict";
 
-    var SpecRunnerUtils = brackets.getModule('spec/SpecRunnerUtils'),
-        FileUtils       = brackets.getModule('file/FileUtils');
+    var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
+        FileUtils       = brackets.getModule("file/FileUtils");
 
-    describe('JSHint', function () {
-        var testFolder = FileUtils.getNativeModuleDirectoryPath(module) + '/unittest-files/',
+    describe("JSHint", function () {
+        var testFolder = FileUtils.getNativeModuleDirectoryPath(module) + "/unittest-files/",
             testWindow,
-            $,
-            brackets,
+//            $,
+//            brackets,
             DocumentManager;
 
         beforeEach(function () {
@@ -41,8 +41,8 @@ define(function (require, exports, module) {
                 SpecRunnerUtils.createTestWindowAndRun(this, function (w) {
                     testWindow = w;
                     // Load module instances from brackets.test
-                    $ = testWindow.$;
-                    brackets = testWindow.brackets;
+//                    $ = testWindow.$;
+//                    brackets = testWindow.brackets;
                     DocumentManager = testWindow.brackets.test.DocumentManager;
                 });
             });
@@ -54,14 +54,14 @@ define(function (require, exports, module) {
 
         afterEach(function () {
             testWindow      = null;
-            $               = null;
-            brackets        = null;
+//            $               = null;
+//            brackets        = null;
             DocumentManager = null;
             SpecRunnerUtils.closeTestWindow();
         });
 
-        it('should open a json file', function () {
-            waitsForDone(SpecRunnerUtils.openProjectFiles(['test.json']), 'open test file');
+        it("should open a json file", function () {
+            waitsForDone(SpecRunnerUtils.openProjectFiles(["test.json"]), "open test file");
 
             runs(function () {
                 var jsonFile = DocumentManager.getCurrentDocument();
@@ -72,4 +72,3 @@ define(function (require, exports, module) {
         });
     });
 });
-

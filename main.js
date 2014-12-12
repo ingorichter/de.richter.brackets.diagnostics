@@ -21,27 +21,27 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, brackets */
+/*global define, brackets, Mustache, $ */
 
 //require.config({
 //    paths: {
-//        'ua-parser-js/ua-parser': 'node_modules/ua-parser-js/src/ua-parser'
+//        "ua-parser-js/ua-parser": 'node_modules/ua-parser-js/src/ua-parser'
 //    }
 //});
 
 define(function (require, exports, module) {
-    'use strict';
+    "use strict";
 
-    var AppInit                   = brackets.getModule('utils/AppInit'),
-        ExtensionUtils            = brackets.getModule("utils/ExtensionUtils"),
-        CommandManager            = brackets.getModule('command/CommandManager'),
-        NodeConnection            = brackets.getModule('utils/NodeConnection'),
-        Menus                     = brackets.getModule('command/Menus'),
-        Dialogs                   = brackets.getModule('widgets/Dialogs'),
-//        MainViewManager         = brackets.getModule('view/MainViewManager'),
-        _                         = brackets.getModule('thirdparty/lodash'),
-        Strings                   = require('strings'),
-        SystemInfo                = require('SystemInfo').SystemInfo;
+    var AppInit           = brackets.getModule("utils/AppInit"),
+        ExtensionUtils    = brackets.getModule("utils/ExtensionUtils"),
+        CommandManager    = brackets.getModule("command/CommandManager"),
+        NodeConnection    = brackets.getModule("utils/NodeConnection"),
+        Menus             = brackets.getModule("command/Menus"),
+        Dialogs           = brackets.getModule("widgets/Dialogs"),
+//        MainViewManager = brackets.getModule("view/MainViewManager"),
+        Strings           = require("strings"),
+        SystemInfo        = require("SystemInfo").SystemInfo,
+        ReportTemplate    = require("text!htmlContent/report-content.html");
 
     var nodeConnection;
 
@@ -64,64 +64,30 @@ define(function (require, exports, module) {
         $(".modal.instance .dialog-message > div").css("max-height", (dlgHt - 150) + "px");
     }
 
-    function formatReport(data, type) {
-        var html = "";
+    function formatReport(data) {
+        var templateData = data;
+        templateData.dateGenerated = new Date().toLocaleString();
+        templateData.appInfo.extensionName = function () {
+            return this.installInfo.metadata.title ? this.installInfo.metadata.title : this.installInfo.metadata.name;
+        };
 
-        html += "Generated:" + new Date().toLocaleString();
-        html += "</br>";
+        var formatMemory = function(val) {
+             return (val / 1024 / 1024 / 1024) + " GB";
+        };
 
-        html += "<h4>Client Information</h4>";
-        html += "UUID:" + data.clientUUID;
-        html += "</br>";
+        templateData.formatFreeMemory = function () {
+            return formatMemory(this.machineInfo.osInfo.os.freemem);
+        };
 
-        html += "<h4>Machine Information</h4>";
-        html += "OS Name:" + data.machineInfo.osname;
-        html += "</br>";
-        html += "OS Version:" + data.machineInfo.osversion;
-        html += "</br>";
-        html += "OS Architecture:" + data.machineInfo.osInfo.os.arch;
-        html += "</br>";
-        html += "OS Type:" + data.machineInfo.osInfo.os.type;
-        html += "</br>";
-        html += "CPU Info:" + data.machineInfo.osInfo.os.cpus[0].model;
-        html += "</br>";
-        html += "CPU Cores:" + data.machineInfo.osInfo.os.cpus.length;
-        html += "</br>";
-        html += "Total Memory:" + (data.machineInfo.osInfo.os.totalmem / 1024 / 1024 / 1024) + ' GB';
-        html += "</br>";
-        html += "Free Memory:" + (data.machineInfo.osInfo.os.freemem / 1024 / 1024 / 1024) + ' GB';
-        html += "</br>";
-        html += "Screen height:" + data.machineInfo.screensize.height;
-        html += "</br>";
-        html += "Screen width:" + data.machineInfo.screensize.width;
-        html += "</br>";
-        html += "Pixel Depth:" + data.machineInfo.screensize.pixelDepth;
+        templateData.formatTotalMemory = function () {
+            return formatMemory(this.machineInfo.osInfo.os.totalmem);
+        };
 
-        html += "</br>";
+        templateData.cpuModel = function () {
+            return this.machineInfo.osInfo.os.cpus[0].model;
+        };
 
-        html += "<h4>Brackets Information</h4>";
-        html += "Version:" + data.appInfo.version;
-        html += "</br>";
-        html += "Language:" + data.appInfo.language;
-        html += "</br>";
-        html += "InBrowser:" + data.appInfo.inBrowser;
-        html += "</br>";
-        html += "App Support Dir:" + data.appInfo.appSupportDir;
-        html += "</br>";
-        html += "CEF Version:" + data.appInfo.cefversion;
-
-        if (data.appInfo.extensions.length > 0) {
-            html += "</br>";
-
-            html += "<h4>Extensions</h4>";
-            html += "<ul>";
-            _.each(data.appInfo.extensions, function (extension) {
-                html += "<li>" + (extension.installInfo.metadata.title ? extension.installInfo.metadata.title : extension.installInfo.metadata.name) + "&mdash;" + extension.installInfo.metadata.version + "</li>";
-            });
-            html += "</ul>";
-        }
-
-        return html;
+        return Mustache.render(ReportTemplate, templateData);
     }
 
     // Function to run when the menu item is clicked
@@ -135,7 +101,7 @@ define(function (require, exports, module) {
 
     function _setup() {
         // First, register a command - a UI-less object associating an id to a handler
-        var MY_COMMAND_ID = 'de.richter.brackets.diagnostics.generateDiagnosticReport';   // package-style naming to avoid collisions
+        var MY_COMMAND_ID = "de.richter.brackets.diagnostics.generateDiagnosticReport";   // package-style naming to avoid collisions
         CommandManager.register(Strings.MENU_ITEM_LABEL, MY_COMMAND_ID, generateReport);
 
         var menu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
@@ -148,7 +114,6 @@ define(function (require, exports, module) {
                 nodeConnection.loadDomains(
                     [ExtensionUtils.getModulePath(module, "node/DiagnosticsDomain")],
                     true).then(function () {
-                        console.log("Started");
                         //nodePromise.resolve();
                     });
             });

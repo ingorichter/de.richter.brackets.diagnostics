@@ -1,0 +1,10 @@
+{
+    "rules": {
+        "curly": 2,
+        "no-trailing-spaces": true,
+        "no-multi-spaces": true,
+        "no-underscore-dangle": true,
+        "no-unused-vars": [1, {"args": "after-used"}],
+        "key-spacing": true
+    }
+}
